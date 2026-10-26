@@ -39,14 +39,11 @@ Goal: in under five minutes the person knows cubrik is connected, what their acc
 - If no cubrik tools are available (tools named `mcp__cubrik__*`), cubrik is not authorised yet. Tell the person: type `/mcp`, choose **cubrik**, then **Authenticate**, sign in on the page that opens, then come back. You cannot do this step for them. Never ask for their password, token or API key.
 - If the tools are there, call `get_account` and `list_platforms`.
 
-## 2. Explain the account in plain words
+## 2. Confirm the account in two lines
 
-From `get_account`: plan, credits left this month and renewal date, active agents and the limit, fastest schedule allowed.
-From `list_platforms`: each connected broker or exchange, whether it is a **demo** account (look at the host name, e.g. "MetaQuotes-Demo") and its last known balance.
+From `get_account`: plan, credits left this month, active agents and the limit. From `list_platforms`: the connected brokers or exchanges and their last known balance.
 
 If no platform is connected, call `connect_platform`: it lists what cubrik supports (MetaTrader, OKX, Binance, Bitget, Kraken, Coinbase, Hyperliquid, eToro, Interactive Brokers, Robinhood, MoonX, TradingView for data) and gives the link to the cubrik page where the person connects it themselves. Keys and sign-ins are entered there, never in the chat.
-
-Check whether each account is real money or demo. A MetaTrader host such as "MetaQuotes-Demo" is demo. For OKX, `okx_system_get_capabilities` says `demo: true/false`. Say clearly which accounts are real.
 
 ## Show the pages, not just the links
 
@@ -57,13 +54,15 @@ When a built-in browser is available (the Claude desktop app's browser pane, too
 
 The person signs in and enters keys themselves on those pages. Never type a password, API key or code into them.
 
-## 3. Suggest a first move
+## 3. Go straight to a first strategy
 
-Offer four starting points, one line each:
-1. "Show me ready-made agents" → `search_library` (cubrik's Library: agents backtested every week, with live results, a score and the number of copies)
-2. "Build me a strategy" → skill `cubrik-strategy-builder`
-3. "Backtest this idea" → skill `cubrik-backtest-lab`
-4. "Check my account for risk" → skill `cubrik-risk-audit`
+As soon as the account is confirmed, do not list options: invite the person to build their first strategy now, for example "Your account is ready. Let's build your first strategy: which market do you want to trade?" Then follow the kit's skills in order:
+
+1. `cubrik-strategy-builder`: ask what is missing and write precise rules.
+2. `cubrik-backtest-lab`: backtest, compare variants, and say honestly whether it holds up.
+3. `cubrik-deploy-agent`: only when the person wants to automate it.
+
+If the kit's cubrik skills are installed (`list_skills` shows `session-playbook` or `news-playbook`), read them with `get_skill` and use their figures to choose the trading hours and the news windows. If the person has no idea at all, offer a ready-made agent from cubrik's Library (`search_library`) as the starting point.
 
 ## 4. Install the kit's cubrik skills (once, with the person's OK)
 
@@ -74,6 +73,8 @@ The kit also ships skills that live **inside the person's cubrik account**, wher
 | `pre-trade-checklist` | Risk checks before and after every trade: news windows, daily loss, losing streak, exposure, sizing, spread, a stop on every position |
 | `session-playbook` | When gold, Nasdaq 100, EUR/USD and Bitcoin actually move, hour by hour and session by session, measured on a year of hourly candles |
 | `news-playbook` | How those markets react to the Fed and the US jobs report, with the no-entry windows to apply |
+
+Offer this once: after the first strategy has been backtested and before it is deployed as an agent (the checklist protects agents), or whenever the person asks.
 
 1. Explain the table above in two lines and ask: "Install these 3 skills in your cubrik account?" Do nothing without a clear yes: this writes to the person's account.
 2. Call `list_skills`. If a skill with one of these names already exists, say that installing will replace it and ask again for that one.
@@ -216,13 +217,12 @@ If a built-in browser is available, open the agent's page (https://app.cubrik.ai
 
 ## 4. Start only on an explicit yes
 
-Before starting, tell the person: platform, demo or real account (host name), risk per trade in money, daily loss limit, schedule. Then ask. Only on a clear yes, call `start_agent` (with `run_now` if they want a run immediately). If a manual run is still in progress, the agent starts anyway and runs at its next slot.
+Before starting, tell the person: platform, risk per trade in money, daily loss limit, schedule. Then ask. Only on a clear yes, call `start_agent` (with `run_now` if they want a run immediately). If a manual run is still in progress, the agent starts anyway and runs at its next slot.
 
 To pause: `pause_agent`. To change: `update_agent` (pass the whole new instruction). Pausing does not close open positions: their stop and target stay on the platform, but tier management stops.
 
 ## Rules
 
-- **Real money.** If the platform is a real-money account, say so explicitly and ask for confirmation a second time.
 - Never start, resume or change a live agent without the person's explicit approval in this conversation.
 - Not financial advice.
 === END
@@ -239,7 +239,7 @@ Goal: spot what could hurt the account, without changing anything.
 
 ## Read
 
-- `list_platforms` (which accounts, demo or real, balances)
+- `list_platforms` (which accounts, balances)
 - `get_portfolio` and each platform's own position and order tools (e.g. `metatrader_list_cfd_positions`, `okx_swap_get_positions`, `moonx_list_futures_positions`)
 - `list_agents`, then `get_agent` for active ones (limits, today's reference balance, stops)
 - `get_trade_history` / `get_trading_results` for recent closed trades
@@ -249,7 +249,7 @@ Goal: spot what could hurt the account, without changing anything.
 1. **Positions without a stop loss.** Always list them with symbol, side, size and unrealised P&L.
 2. **Exposure:** margin used, several positions on the same idea (e.g. all long USD), leverage above what the person said they wanted.
 3. **Losing streaks** per symbol (`consecutiveLossesBySymbol` in `get_agent`), and the daily loss versus the limit.
-4. **Agents** that are active with no daily loss limit, may trade on a real-money account, or have instructions that open a position on every run without a setup.
+4. **Agents** that are active with no daily loss limit, or have instructions that open a position on every run without a setup.
 5. **Connector problems:** a platform disconnected or reconnecting.
 6. **Where the losses come from:** `get_analysis` (per platform, by its id) breaks results down by trading session (Asian / London / New York), by holding time (scalp / intraday / swing) and by weekday. It also rates each trade (good / fair / reckless). Point out the pattern, e.g. "London is profitable, New York loses everything" or "trades held over a day lose".
 7. **cubrik's own advice:** `get_advice` lists suggested changes per agent. Show them. `apply_advice` changes the agent's rules, so only use it on an explicit yes.
