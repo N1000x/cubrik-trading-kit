@@ -85,7 +85,6 @@ If the download fails, say so and stop; never write a skill from memory.
 
 ## Rules
 
-- Recommend starting on a **demo** account. Say so once, clearly.
 - Never place an order, start an agent or change a setting during onboarding, except installing the kit's cubrik skills after an explicit yes.
 - Not financial advice: you help build and test the person's own ideas; they decide.
 === END
@@ -183,7 +182,7 @@ description: Turn a tested strategy into a cubrik agent that trades on a connect
 
 # cubrik deploy agent
 
-Goal: an agent that follows the strategy exactly, on a demo account first, with nothing live until the person says yes.
+Goal: an agent that follows the strategy exactly, with nothing live until the person says yes.
 
 ## 0. Pick the kind of agent
 
@@ -223,7 +222,7 @@ To pause: `pause_agent`. To change: `update_agent` (pass the whole new instructi
 
 ## Rules
 
-- **Demo first.** If the platform is a real-money account, say so explicitly and ask for confirmation a second time.
+- **Real money.** If the platform is a real-money account, say so explicitly and ask for confirmation a second time.
 - Never start, resume or change a live agent without the person's explicit approval in this conversation.
 - Not financial advice.
 === END
@@ -329,4 +328,4 @@ Tell me, in my language:
    - "Check my account for risk."
    - "Give me today's report."
    - "Install the kit's skills in my cubrik account."
-4. One reminder: start on a demo account; nothing goes live without my explicit OK; this is not financial advice.
+4. One reminder: nothing goes live without my explicit OK; this is not financial advice.

@@ -21,7 +21,7 @@ Turn Claude into a trading assistant connected to [cubrik](https://cubrik.ai): b
 | `cubrik-onboarding` | "Am I connected? What can my plan do?" |
 | `cubrik-strategy-builder` | "Build me a gold strategy on 1h." |
 | `cubrik-backtest-lab` | "Backtest it and tell me honestly if it holds up." |
-| `cubrik-deploy-agent` | "Turn it into an agent on my MetaTrader demo." |
+| `cubrik-deploy-agent` | "Turn it into an agent on my MetaTrader account." |
 | `cubrik-risk-audit` | "Check my account for risk." |
 | `cubrik-daily-report` | "Give me today's report." |
 | `cubrik-market-scan` | "How does gold look right now?" |
@@ -36,7 +36,7 @@ Turn Claude into a trading assistant connected to [cubrik](https://cubrik.ai): b
 
 ## Safety built in
 
-- Demo account first. Agents are created **paused**; nothing goes live without your explicit OK.
+- Agents are created **paused**; nothing goes live without your explicit OK.
 - Claude never types a password, API key or code for you: you sign in on cubrik yourself.
 - No skill can move money in or out of your accounts.
 
@@ -65,7 +65,7 @@ Le kit transforme Claude en assistant de trading connecté à [cubrik](https://c
 
 ### Sécurité
 
-Compte démo d'abord. Les agents sont créés en pause ; rien ne part en réel sans ton accord. Claude ne tape jamais de mot de passe ni de clé à ta place.
+Les agents sont créés en pause ; rien ne part en réel sans ton accord. Claude ne tape jamais de mot de passe ni de clé à ta place.
 
 ### Avertissement
 
